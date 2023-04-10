@@ -18,7 +18,7 @@ const bmiSchema = new mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now,
+        default: () => new Date().toISOString().substring(0, 10),
     }
 });
 module.exports = mongoose.model('bmi', bmiSchema);
