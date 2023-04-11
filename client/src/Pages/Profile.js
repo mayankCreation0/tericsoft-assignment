@@ -5,9 +5,10 @@ import {
   Avatar,
   Heading,
   Text,
+  Button,
 } from '@chakra-ui/react';
 import axios from 'axios'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { context } from '../Context/Context'
 import Cookies from "universal-cookie";
 // import MyLoader from "./Loader";
@@ -42,18 +43,39 @@ const Profile = () => {
       {authstate ?
       <>
       <Navbar/>
-        <Box maxW='500px' mx='auto' mt='50px' p='20px' bg='white' boxShadow='xl' borderRadius='md'>
-          {userData ? (
-            <>
-              <Avatar size='xl' name={userData.name} src={userData.avatar} mx='auto' mb='20px' />
-              <Heading mb='10px'>Name:- {userData.name}</Heading>
-                <Text mb='20px'> Email id:- {userData.email}</Text>
-                <Text mb='20px'> Created At:- {(userData.createdAt).slice(0,10)}</Text>
-            </>
-          ) : (
-            <Text>Loading...</Text>
-          )}
-        </Box>
+          <Box maxW='500px' mx='auto' mt='50px' p='20px' bg='gray.100' boxShadow='2xl' borderRadius='xl'>
+            {userData ? (
+              <>
+                <Avatar size='2xl' name={userData.name} src={userData.avatar} mx='auto' mb='20px' />
+                <Heading mb='10px' color='teal.500'>Name: {userData.name}</Heading>
+                <Text mb='20px' color='gray.700'>Email: {userData.email}</Text>
+                <Text mb='20px' color='gray.700'>Created At: {(userData.createdAt).slice(0, 10)}</Text>
+              </>
+            ) : (
+              <Text color='gray.700' textAlign='center'>Loading...</Text>
+            )}
+            <Box display='flex' justifyContent='center' alignItems='center'>
+              <Link to='/home'><Button
+                bg='blue.500'
+                color='white'
+                borderRadius='md'
+                boxShadow='md'
+                mr='10px'
+                _hover={{ bg: 'blue.600' }}
+              >
+                Home
+              </Button></Link>
+              <Link to='/history'><Button
+                bg='green.500'
+                color='white'
+                borderRadius='md'
+                boxShadow='md'
+                _hover={{ bg: 'green.600' }}
+              >
+                Bmi History
+              </Button></Link>
+            </Box>
+          </Box> 
         </>
         : navigate('/')}
     </>

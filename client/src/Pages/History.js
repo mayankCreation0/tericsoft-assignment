@@ -2,7 +2,20 @@ import React, { useContext, useEffect, useState } from 'react'
 import Navbar from '../Components/Navbar'
 import { context } from '../Context/Context';
 import { useNavigate } from 'react-router-dom';
-import { Box, Heading, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Table,
+  TableCaption,
+  Thead,
+  Tr,
+  Th,
+  Tbody,
+  Td,
+  IconButton,
+  Tooltip,
+} from '@chakra-ui/react';
+// import { FaTrash } from 'react-icons/fa';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import Pagination from '../Components/Pagination';
@@ -20,7 +33,8 @@ const History = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(10);
   const [datalength, setDatalength] = useState(0);
-  // const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
+
   useEffect(()=>{
     const fetchData = async()=>{
       const res = await axios('http://localhost:8080/user/history',{headers})
@@ -41,20 +55,25 @@ const History = () => {
           <Box mt="50px" mx="auto" maxW="800px">
             <Heading mb="20px">BMI Calculations</Heading>
             <Table variant="simple">
+              <TableCaption>Calculations of BMI values</TableCaption>
               <Thead>
                 <Tr>
                   <Th>Date</Th>
-                  <Th>Height</Th>
-                  <Th>Weight</Th>
+                  <Th>Height (m)</Th>
+                  <Th>Weight (kg)</Th>
                   <Th>BMI</Th>
+                  <Th></Th>
                 </Tr>
               </Thead>
               <Tbody>
                 {paginateData.map((calculation) => (
-                  <Tr key={calculation._id}>
+                  <Tr
+                    key={calculation._id}
+                    _hover={{ bgColor: 'gray' }}
+                  >
                     <Td>{new Date(calculation.createdAt).toLocaleDateString()}</Td>
-                    <Td>{calculation.height} cm</Td>
-                    <Td>{calculation.weight} kg</Td>
+                    <Td>{calculation.height}</Td>
+                    <Td>{calculation.weight}</Td>
                     <Td>{calculation.bmi.toFixed(2)}</Td>
                   </Tr>
                 ))}
