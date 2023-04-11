@@ -14,13 +14,16 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { context } from '../Context/Context'
 import Cookies from "universal-cookie";
+import jwt_decode from "jwt-decode";
 // import MyLoader from "./Loader";
 
 const Home = () => {
   const cookies = new Cookies();
+  const token = cookies.get('token');
+  const decodedToken = jwt_decode(token);
+  const user = decodedToken.id;
   const { authstate } = useContext(context);
   const navigate = useNavigate()
-  const token = cookies.get('token');
   const headers = {
     Authorization: `Bearer ${token}`,
   };
@@ -42,6 +45,7 @@ const Home = () => {
       const response = await axios.post('https://tericsoft-assignment-backend.vercel.app/user/bmi-calulation', {
         height,
         weight,
+        user
       },{headers});
        setBmiResult(response.data.bmi);
        console.log(response.data.bmi)

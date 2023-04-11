@@ -77,13 +77,15 @@ const LoginSignupPage = () => {
                 "https://tericsoft-assignment-backend.vercel.app/login",
                 loginput
             );
-            console.log(res.data.token);
+            console.log(res.data.user._id);
             setLoading(false);
             if (res.data.token) {
                 cookies.set('token', res.data.token, { path: '/' });
+                cookies.set('userid', res.data.user._id, { path: '/' });
 
                 setTimeout(() => {
                     console.log(cookies.get('token'))
+                    console.log(cookies.get('userid'))
                 }, 1000);
                 toast({
                     title: 'LoggedIn Sucessfully.',

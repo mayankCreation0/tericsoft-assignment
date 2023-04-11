@@ -19,6 +19,7 @@ const Navbar = () => {
     const token = cookies.get('token');
     const decodedToken = jwt_decode(token);
     const id = decodedToken.id;
+    const uid = decodedToken.id;
     const closeMobileMenu = () => setClick(false);
     return (
         <div className="header">
@@ -33,7 +34,7 @@ const Navbar = () => {
                         <Link to={`/profile/${id}`}>Profile</Link>
                     </li>
                     <li className="option" onClick={closeMobileMenu}>
-                        <Link to="/history">History</Link>
+                        <Link to={`/history/${uid}`}>History</Link>
                     </li>
                     <li className="option mobile-option" onClick={closeMobileMenu}>
                         <Link to="" className="sign-up">
