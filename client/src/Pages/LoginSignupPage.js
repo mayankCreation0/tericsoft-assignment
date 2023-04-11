@@ -24,7 +24,7 @@ const LoginSignupPage = () => {
     const toast = useToast();
     const [loginput, setLoginput] = useState([]);
     const [sininput, setSininput] = useState([]);
-    const [isLogin, setIsLogin] = useState(true);
+    const [isLogin, setIsLogin] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const handleSignupSubmit = async (event) => {
@@ -32,7 +32,7 @@ const LoginSignupPage = () => {
         try {
             setLoading(true)
             const res = await axios.post(
-                "###",
+                "http://localhost:8080/register",
                 sininput
             );
             console.log(res.status);
@@ -44,11 +44,8 @@ const LoginSignupPage = () => {
                     status: 'success',
                     duration: 2500,
                     isClosable: true,
-                    onCloseComplete: () => {
-                        navigate('/');
-                    }
                 })
-                // fnauthstate();
+                setIsLogin(true)
             }
             else if (res.status === 400) {
                 setLoading(false);
@@ -77,7 +74,7 @@ const LoginSignupPage = () => {
         try {
             setLoading(true);
             const res = await axios.post(
-                "",
+                "http://localhost:8080/login",
                 loginput
             );
             console.log(res.data.token);
@@ -96,6 +93,7 @@ const LoginSignupPage = () => {
                     isClosable: true,
                 })
                 fnauthstate();
+                navigate('/home')
             }
             else {
                 setLoading(false);
@@ -185,7 +183,7 @@ const LoginSignupPage = () => {
                             <FormControl mt={6}>
                                 <FormLabel>Full Name</FormLabel>
                                 <Input
-                                    type="password"
+                                    type="name"
                                     placeholder="Enter Full Name"
                                     name="name"
                                     onChange={sinhandleChange}
