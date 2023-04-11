@@ -12,13 +12,13 @@ import {
   Th,
   Tbody,
   Td,
-  IconButton,
-  Tooltip,
+  Button
 } from '@chakra-ui/react';
 // import { FaTrash } from 'react-icons/fa';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import Pagination from '../Components/Pagination';
+import MyLoader from '../Components/Loader';
 
 const History = () => {
   const cookies = new Cookies();
@@ -29,19 +29,21 @@ const History = () => {
   const { authstate } = useContext(context);
   const navigate = useNavigate()
   console.log(authstate)
-  const [data ,setData]= useState([]);
+  const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(10);
   const [datalength, setDatalength] = useState(0);
   const [loading, setLoading] = useState(false)
 
-  useEffect(()=>{
-    const fetchData = async()=>{
-      const res = await axios('http://localhost:8080/user/history',{headers})
-      console.log(res.data.calculations)
-      setData(res.data.calculations)
-      setDatalength(res.data.calculations.length);
-    }
+  const fetchData = async () => {
+    // setLoading(true);
+    const res = await axios('http://localhost:8080/user/history', { headers })
+    console.log(res.data.calculations)
+    setData(res.data.calculations)
+    setDatalength(res.data.calculations.length);
+    // setLoading(false);
+  }
+  useEffect(() => {
     fetchData();
   })
   const lastPostIndex = currentPage * postsPerPage;
@@ -50,41 +52,48 @@ const History = () => {
   return (
     <>
       {authstate ?
-        <div>
-          <Navbar />
-          <Box mt="50px" mx="auto" maxW="800px">
-            <Heading mb="20px">BMI Calculations</Heading>
-            <Table variant="simple">
-              <TableCaption>Calculations of BMI values</TableCaption>
-              <Thead>
-                <Tr>
-                  <Th>Date</Th>
-                  <Th>Height (m)</Th>
-                  <Th>Weight (kg)</Th>
-                  <Th>BMI</Th>
-                  <Th></Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {paginateData.map((calculation) => (
-                  <Tr
-                    key={calculation._id}
-                    _hover={{ bgColor: 'gray' }}
-                  >
-                    <Td>{new Date(calculation.createdAt).toLocaleDateString()}</Td>
-                    <Td>{calculation.height}</Td>
-                    <Td>{calculation.weight}</Td>
-                    <Td>{calculation.bmi.toFixed(2)}</Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
-          </Box>
-          <Pagination totalPosts={datalength}
-            postsPerPage={postsPerPage}
-            setCurrentPage={setCurrentPage}
-            currentPage={currentPage} />
-        </div>
+        <>
+          {loading ?
+            <>
+              <MyLoader />
+            </> :
+            <div>
+              <Navbar />
+              <Box mt="50px" mx="auto" maxW="800px">
+                <Heading mb="20px">BMI Calculations</Heading>
+                <Table variant="simple">
+                  <TableCaption>Calculations of BMI values</TableCaption>
+                  <Thead>
+                    <Tr>
+                      <Th>Date</Th>
+                      <Th>Height (m)</Th>
+                      <Th>Weight (kg)</Th>
+                      <Th>BMI</Th>
+                      <Th>Delete</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {paginateData.map((calculation) => (
+                      <Tr
+                        key={calculation._id}
+                        _hover={{ bgColor: 'gray' }}
+                      >
+                        <Td>{new Date(calculation.createdAt).toLocaleDateString()}</Td>
+                        <Td>{calculation.height}</Td>
+                        <Td>{calculation.weight}</Td>
+                        <Td>{calculation.bmi.toFixed(2)}</Td>
+                        <Td><Button colorScheme='red'>Delete</Button></Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+                </Table>
+              </Box>
+              <Pagination totalPosts={datalength}
+                postsPerPage={postsPerPage}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage} />
+            </div>}
+        </>
         : navigate('/')}
     </>
   )
