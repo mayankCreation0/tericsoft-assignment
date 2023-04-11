@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 // import { FaTrash } from 'react-icons/fa';
 import axios from 'axios';
-import Cookies from 'universal-cookie';
+// import Cookies from 'universal-cookie';
 import Pagination from '../Components/Pagination';
 import MyLoader from '../Components/Loader';
 
@@ -39,7 +39,7 @@ const History = () => {
     const res = await axios(`https://tericsoft-assignment-backend.vercel.app/user/history/${uid}`)
     console.log(res.data.calculations)
     setData(res.data.calculations)
-    // setDatalength(res.data.calculations.length);
+    setDatalength(res.data.calculations.length);
     setLoading(false);
   }
   useEffect(() => {
@@ -47,7 +47,7 @@ const History = () => {
   }, [])
   const lastPostIndex = currentPage * postsPerPage;
   const firstPostIndex = lastPostIndex - postsPerPage;
-  // const paginateData = data.slice(firstPostIndex, lastPostIndex);
+  const paginateData = data.slice(firstPostIndex, lastPostIndex);
   return (
     <>
       {authstate ?
@@ -55,44 +55,44 @@ const History = () => {
           {loading ?
             <>
               <MyLoader />
-            </> :<>
-            {data === null || data.length <1 ? "Oops no Data found" : <div>
-              <Navbar />
-              <Box mt="50px" mx="auto" maxW="800px">
-                <Heading mb="20px">BMI Calculations</Heading>
-                <Table variant="simple">
-                  <TableCaption>Calculations of BMI values</TableCaption>
-                  <Thead>
-                    <Tr>
-                      <Th>Date</Th>
-                      <Th>Height (m)</Th>
-                      <Th>Weight (kg)</Th>
-                      <Th>BMI</Th>
-                      <Th>Delete</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {data.map((calculation) => (
-                      <Tr
-                        key={calculation._id}
-                        _hover={{ bgColor: 'gray' }}
-                      >
-                        <Td>{new Date(calculation.createdAt).toLocaleDateString()}</Td>
-                        <Td>{calculation.height}</Td>
-                        <Td>{calculation.weight}</Td>
-                        <Td>{calculation.bmi.toFixed(2)}</Td>
-                        <Td><Button colorScheme='red'>Delete</Button></Td>
+            </> : <>
+              {data === null || data.length < 1 ? <><Navbar /> <Heading>Oops no Data found!!!</Heading> </> : <div>
+                <Navbar />
+                <Box mt="50px" mx="auto" maxW="800px">
+                  <Heading mb="20px">BMI Calculations</Heading>
+                  <Table variant="simple">
+                    <TableCaption>Calculations of BMI values</TableCaption>
+                    <Thead>
+                      <Tr>
+                        <Th>Date</Th>
+                        <Th>Height (m)</Th>
+                        <Th>Weight (kg)</Th>
+                        <Th>BMI</Th>
+                        <Th>Delete</Th>
                       </Tr>
-                    ))}
-                  </Tbody>
-                </Table>
-              </Box>
-              <Pagination totalPosts={datalength}
-                postsPerPage={postsPerPage}
-                setCurrentPage={setCurrentPage}
-                currentPage={currentPage} />
+                    </Thead>
+                    <Tbody>
+                      {paginateData.map((calculation) => (
+                        <Tr
+                          key={calculation._id}
+                          _hover={{ bgColor: 'gray' }}
+                        >
+                          <Td>{new Date(calculation.createdAt).toLocaleDateString()}</Td>
+                          <Td>{calculation.height}</Td>
+                          <Td>{calculation.weight}</Td>
+                          <Td>{calculation.bmi.toFixed(2)}</Td>
+                          <Td><Button colorScheme='red'>Delete</Button></Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
+                </Box>
+                <Pagination totalPosts={datalength}
+                  postsPerPage={postsPerPage}
+                  setCurrentPage={setCurrentPage}
+                  currentPage={currentPage} />
               </div>} </>}
-    </>
+        </>
         : navigate('/')}
     </>
   )
