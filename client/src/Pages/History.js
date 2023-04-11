@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Heading, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import axios from 'axios';
 import Cookies from 'universal-cookie';
+import Pagination from '../Components/Pagination';
 
 const History = () => {
   const cookies = new Cookies();
@@ -16,14 +17,22 @@ const History = () => {
   const navigate = useNavigate()
   console.log(authstate)
   const [data ,setData]= useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(10);
+  const [datalength, setDatalength] = useState(0);
+  // const [loading, setLoading] = useState(false)
   useEffect(()=>{
     const fetchData = async()=>{
       const res = await axios('http://localhost:8080/user/history',{headers})
       console.log(res.data.calculations)
       setData(res.data.calculations)
+      setDatalength(res.data.calculations.length);
     }
     fetchData();
   })
+  const lastPostIndex = currentPage * postsPerPage;
+  const firstPostIndex = lastPostIndex - postsPerPage;
+  const paginateData = data.slice(firstPostIndex, lastPostIndex);
   return (
     <>
       {authstate ?
@@ -41,7 +50,7 @@ const History = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                {data.map((calculation) => (
+                {paginateData.map((calculation) => (
                   <Tr key={calculation._id}>
                     <Td>{new Date(calculation.createdAt).toLocaleDateString()}</Td>
                     <Td>{calculation.height} cm</Td>
@@ -52,6 +61,10 @@ const History = () => {
               </Tbody>
             </Table>
           </Box>
+          <Pagination totalPosts={datalength}
+            postsPerPage={postsPerPage}
+            setCurrentPage={setCurrentPage}
+            currentPage={currentPage} />
         </div>
         : navigate('/')}
     </>
