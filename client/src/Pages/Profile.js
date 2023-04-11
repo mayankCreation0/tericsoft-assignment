@@ -11,6 +11,7 @@ import axios from 'axios'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { context } from '../Context/Context'
 import Cookies from "universal-cookie";
+import jwt_decode from "jwt-decode";
 // import MyLoader from "./Loader";
 
 const Profile = () => {
@@ -19,6 +20,8 @@ const Profile = () => {
   const { authstate } = useContext(context);
   const navigate = useNavigate()
   const token = cookies.get('token');
+  const decodedToken = jwt_decode(token);
+  const uid = decodedToken.id;
   const headers = {
     Authorization: `Bearer ${token}`,
   };
@@ -65,7 +68,7 @@ const Profile = () => {
               >
                 Home
               </Button></Link>
-              <Link to='/history'><Button
+              <Link to={`/history/${uid}`}><Button
                 bg='green.500'
                 color='white'
                 borderRadius='md'
