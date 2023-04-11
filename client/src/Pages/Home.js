@@ -39,7 +39,7 @@ const Home = () => {
 
   const calculateBMI = async () => {
     try {
-      const response = await axios.post('https://drab-pear-calf-yoke.cyclic.app/user/bmi-calulation', {
+      const response = await axios.post('https://tericsoft-assignment-backend.vercel.app/user/bmi-calulation', {
         height,
         weight,
       },{headers});

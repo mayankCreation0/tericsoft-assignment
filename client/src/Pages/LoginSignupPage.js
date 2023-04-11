@@ -32,7 +32,7 @@ const LoginSignupPage = () => {
         try {
             setLoading(true)
             const res = await axios.post(
-                "https://drab-pear-calf-yoke.cyclic.app/register",
+                "https://tericsoft-assignment-backend.vercel.app/register",
                 sininput
             );
             console.log(res.status);
@@ -74,7 +74,7 @@ const LoginSignupPage = () => {
         try {
             setLoading(true);
             const res = await axios.post(
-                "https://drab-pear-calf-yoke.cyclic.app/login",
+                "https://tericsoft-assignment-backend.vercel.app/login",
                 loginput
             );
             console.log(res.data.token);

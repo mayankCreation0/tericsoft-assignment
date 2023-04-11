@@ -37,7 +37,7 @@ const History = () => {
 
   const fetchData = async () => {
     // setLoading(true);
-    const res = await axios('https://drab-pear-calf-yoke.cyclic.app/user/history', { headers })
+    const res = await axios('https://tericsoft-assignment-backend.vercel.app/user/history', { headers })
     console.log(res.data.calculations)
     setData(res.data.calculations)
     setDatalength(res.data.calculations.length);
