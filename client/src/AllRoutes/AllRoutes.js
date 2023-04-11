@@ -1,8 +1,7 @@
-import React, { useContext } from 'react'
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import React from 'react'
+import { Route, Routes } from 'react-router-dom'
 import LoginSignupPage from '../Pages/LoginSignupPage'
 import Home from '../Pages/Home'
-import { context } from '../Context/Context'
 import Profile from '../Pages/Profile'
 import History from '../Pages/History'
 
