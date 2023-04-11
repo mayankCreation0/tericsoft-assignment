@@ -5,14 +5,20 @@ import { ReactComponent as Logo } from "../Assets/logo.svg";
 import "../Styles/Navbar.css";
 import { Link } from "react-router-dom";
 import { context } from "../Context/Context";
+import Cookies from "universal-cookie";
+import jwt_decode from "jwt-decode";
 
 const Navbar = () => {
+    const cookies = new Cookies();
     const { falseAuthState } = useContext(context)
     const [click, setClick] = useState(false);
     const handleClick = () => setClick(!click);
     function refreshPage() {
         falseAuthState();
     }
+    const token = cookies.get('token');
+    const decodedToken = jwt_decode(token);
+    const id = decodedToken.id;
     const closeMobileMenu = () => setClick(false);
     return (
         <div className="header">
@@ -24,7 +30,7 @@ const Navbar = () => {
                 </div>
                 <ul className={click ? "nav-options active" : "nav-options"}>
                     <li className="option" onClick={closeMobileMenu}>
-                        <Link to="/profile">Profile</Link>
+                        <Link to={`/profile/${id}`}>Profile</Link>
                     </li>
                     <li className="option" onClick={closeMobileMenu}>
                         <Link to="/history">History</Link>

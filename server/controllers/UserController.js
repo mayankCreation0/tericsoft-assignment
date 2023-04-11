@@ -47,9 +47,10 @@ const login = async (req, res) => {
     }
 };
 const getDetails = async (req, res) => {
-    const { email } = req.body;
+    const { id } = req.params;
+    // console.log(id);
     try {
-        const existingUser = await UserModel.findOne({ email: email });
+        const existingUser = await UserModel.findById(id);
         if (!existingUser) {
             return res.status(400).json({ message: "User not found" });
         }
@@ -58,7 +59,8 @@ const getDetails = async (req, res) => {
         console.log(err);
         return res.status(500).send({ message: "Something went wrong" });
     }
-}
+};
+
 const getUserHistory = async (req, res) => {
     try {
         const user = req.userId;
