@@ -27,7 +27,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`https://tericsoft-assignment-backend.vercel.app/user/profile/${id}`,{headers});
+        const response = await axios.get(`http://localhost:8080/user/profile/${id}`,{headers});
         setUserData(response.data.user);
         console.log(response.data.user)
 
@@ -37,7 +37,7 @@ const Profile = () => {
     };
 
     fetchUserData();
-  }, [id]);
+  }, []);
   return (
     <>
       {authstate ?
